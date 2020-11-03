@@ -1,15 +1,12 @@
 from Process import Process
+from CPU import CPU
 import Utils
+import Constants
 
-processes = [
-    Process("a", 10, 20),
-    Process("z", 10, 20),
-    Process("d", 10, 20),
-    Process("e", 10, 20),
-    Process("n", 10, 20),
-    Process("p", 10, 20),
-    Process("z", 10, 20)
-]
+p1 = Process("A", 0, 3)
+p2 = Process("B", 2, 6)
+p3 = Process("C", 4, 4)
+p4 = Process("D", 6, 5)
+p5 = Process("E", 8, 2)
 
-for p in Utils.order_by_id(processes):
-    print(p.show())
+CPU(Constants.SJF, [p1, p2, p3, p4, p5])

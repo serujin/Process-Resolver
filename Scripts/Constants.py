@@ -1,3 +1,4 @@
+#Processes states
 NOT_ARRIVED = 0
 ON_CPU = 1
 ON_CPU_QUEUE = 2
@@ -8,3 +9,8 @@ ENDED = 5
 LOW_PRIORITY = 3
 MID_PRIORITY = 2
 TOP_PRIORITY = 1
+#CPU algorithms
+FIFO = 0
+SJF = 1
+SRTF = 2
+RR = 3

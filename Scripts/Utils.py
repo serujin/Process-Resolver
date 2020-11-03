@@ -2,22 +2,11 @@ from Process import Process
 import Constants
 
 def has_to_stop(processes):
+    temp = True
     for process in processes:
         if not process.has_ended():
-            return False
-    return True
-
-def cpu_is_empty(processes):
-    for process in processes:
-        if process.get_state() == Constants.ON_CPU:
-            return False
-    return True
-
-def io_is_empty(processes):
-    for process in processes:
-        if process.get_state() == Constants.ON_IO:
-            return False
-    return True
+            temp = False
+    return temp
 
 def get_new_arrivals(processes, time):
     temp = []
@@ -26,14 +15,56 @@ def get_new_arrivals(processes, time):
             temp.append(process)
     return temp
 
-def order_by_priority(processes):
+def get_processes_ids(processes):
     temp = []
-    for priority in [Constants.TOP_PRIORITY, Constants.MID_PRIORITY, Constants.LOW_PRIORITY]:
-        for process in processes:
-            if process.has_priority() and process.get_priority() == priority:
-                temp.append(process)
+    for process in processes:
+        temp.append(process.get_id())
     return temp
 
+def order_by_priority(processes, duration):
+    low_priorities = []
+    mid_priorities = []
+    top_priorities = []
+    no_priorities = []
+    for process in processes:
+        if process.has_priority() and process.get_priority() == Constants.LOW_PRIORITY:
+            low_priorities.append(process)
+    for process in processes:
+        if process.has_priority() and process.get_priority() == Constants.MID_PRIORITY:
+            mid_priorities.append(process)
+    for process in processes:
+        if process.has_priority() and process.get_priority() == Constants.TOP_PRIORITY:
+            top_priorities.append(process)
+    for process in processes:
+        if not process.has_priority():
+            no_priorities.append(process)
+    low_priorities = order_by_id(low_priorities)
+    mid_priorities = order_by_id(mid_priorities)
+    top_priorities = order_by_id(top_priorities)
+    no_priorities = order_by_id(no_priorities)
+    if duration:
+        low_priorities = order_by_duration(low_priorities)
+        mid_priorities = order_by_duration(mid_priorities)
+        top_priorities = order_by_duration(top_priorities)
+        no_priorities = order_by_duration(no_priorities)
+    return top_priorities + mid_priorities + low_priorities + no_priorities
+
+def order_by_duration(processes):
+    possible_durations = []
+    durations = []
+    for process in processes:
+        duration = process.get_duration()
+        if not duration in possible_durations:
+            possible_durations.append(duration)
+    possible_durations.sort()
+    for duration in possible_durations:
+        temp = []
+        for process in processes:
+            if process.get_duration() == duration:
+                temp.append(process)
+        durations += temp
+    return durations    
+    
 def order_by_id(processes):
     ids = []
     for process in processes:

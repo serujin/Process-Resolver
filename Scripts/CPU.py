@@ -1,45 +1,36 @@
 from Process import Process
-
-'''
-Need to do:
-FIFO
-SJF
-SRTF
-RR
-'''
+from Non_Expulsive import Non_Expulsive
+from Expulsive import Expulsive
+import Constants
 
 class CPU():
-    def __init__(self, algorithm, *processes, quantum = None):
+    def __init__(self, algorithm, processes, quantum = -1):
         self.__init_all()
-        self.__fill_processes(processes)
+        self.__processes = processes
         self.__start(algorithm, quantum)
 
     def __init_all(self):
         self.__processes = []
         self.__history = [[]]
 
-    def __fill_processes(self, *processes):
-        for process in processes:
-            self.__processes.append(process)
-
     def __start(self, algorithm, quantum):
-        if algorithm == 0:
+        if algorithm == Constants.FIFO:
             self.__start_fifo()
-        if algorithm == 1:
+        if algorithm == Constants.SJF:
             self.__start_sjf()
-        if algorithm == 2:
-            self.__start_srtn()
-        if algorithm == 3:
+        if algorithm == Constants.SRTF:
+            self.__start_srtf()
+        if algorithm == Constants.RR:
             self.__start_rr(quantum)
 
     def __start_fifo(self):
-        pass
+        Non_Expulsive(self.__processes, False)
 
     def __start_sjf(self):
-        pass
+        Non_Expulsive(self.__processes, True)
     
-    def __start_srtn(self):
-        pass
+    def __start_srtf(self):
+        Expulsive(self.__processes, True)
     
     def __start_rr(self, quantum):
-        pass   
+        Expulsive(self.__processes, True, quantum)
