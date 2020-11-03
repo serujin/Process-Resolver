@@ -9,4 +9,4 @@ p3 = Process("C", 4, 4)
 p4 = Process("D", 6, 5)
 p5 = Process("E", 8, 2)
 
-CPU(Constants.SJF, [p1, p2, p3, p4, p5])
+CPU(Constants.SRTF, [p1, p2, p3, p4, p5])

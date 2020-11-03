@@ -22,7 +22,6 @@ class Expulsive():
 
     def __start(self):
         while not Utils.has_to_stop(self.__processes):
-            self.__check_if_cpu_should_change()
             self.__fill_cpu_queue()
             self.__fill_cpu()
             self.__fill_io_queue()
@@ -48,15 +47,6 @@ class Expulsive():
             process.set_state(Constants.ON_CPU_QUEUE)
         self.__cpu_queue = Utils.order_by_priority(self.__cpu_queue, self.__duration_matters)
 
-    def __check_if_cpu_should_change(self):
-        if not self.__cpu == None:
-            if len(self.__cpu_queue) > 0:
-                print("Compared : " + str(self.__cpu_queue[0].get_duration()) + " < " + str(self.__cpu.get_duration()) + " = " + str(self.__cpu_queue[0].get_duration() < self.__cpu.get_duration()))
-                if self.__cpu_queue[0].get_duration() < self.__cpu.get_duration():
-                    self.__cpu_queue.append(self.__cpu)
-                    self.__cpu = None 
-                    print("changed")
-
     def __fill_cpu(self):
         if self.__cpu == None:
             if len(self.__cpu_queue) > 0:
@@ -65,9 +55,9 @@ class Expulsive():
                 self.__cpu.set_state(Constants.ON_CPU)
                 if not self.__cpu == None:
                     if self.__cpu.cpu_tick(self.__time, self.__quantum):
-                        self.__cpu = None    
+                        self.__cpu = None 
         elif self.__cpu.cpu_tick(self.__time, self.__quantum):
-            self.__cpu = None
+            self.__cpu = None 
 
     def __fill_io_queue(self):
         for process in self.__processes:
@@ -89,10 +79,10 @@ class Expulsive():
 
     def __fill_history(self):
         temp = []
-        print("iteration : " + str(self.__time))
+        #print("iteration : " + str(self.__time))
         for _id in self.__ids:
             for process in self.__processes:
                 if process.get_id() == _id:
-                    print("added state : " + str(process.get_state()) + " to the id : " + str(_id) )
+                    #print("added state : " + str(process.get_state()) + " to the id : " + str(_id) )
                     temp.append(process.get_state())
         self.__history.append(temp)
