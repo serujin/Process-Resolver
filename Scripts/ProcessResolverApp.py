@@ -6,11 +6,11 @@ import Constants
 
 def get_processes():
     return [
-        Process("A", 0, 3),
-        Process("B", 2, 6),
-        Process("C", 4, 4),
-        Process("D", 6, 5),
-        Process("E", 8, 2)
+        Process("A", 0, 3, Constants.MID_PRIORITY),
+        Process("B", 2, 6, Constants.MID_PRIORITY),
+        Process("C", 2, 7, Constants.MID_PRIORITY),
+        Process("D", 6, 5, Constants.MID_PRIORITY),
+        Process("E", 8, 2, Constants.TOP_PRIORITY)
     ]
 
 def get_exercises():
