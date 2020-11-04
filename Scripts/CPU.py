@@ -11,7 +11,6 @@ class CPU():
 
     def __init_all(self):
         self.__processes = []
-        self.__history = [[]]
 
     def __start(self, algorithm, quantum):
         if algorithm == Constants.FIFO:
@@ -24,13 +23,16 @@ class CPU():
             self.__start_rr(quantum)
 
     def __start_fifo(self):
-        Non_Expulsive(self.__processes, False)
+        self.__history = Non_Expulsive(self.__processes, False).get_history()
 
     def __start_sjf(self):
-        Non_Expulsive(self.__processes, True)
+        self.__history = Non_Expulsive(self.__processes, True).get_history()
     
     def __start_srtf(self):
-        Expulsive(self.__processes, True)
+        self.__history = Expulsive(self.__processes, True).get_history()
     
     def __start_rr(self, quantum):
-        Expulsive(self.__processes, True, quantum)
+        self.__history = Expulsive(self.__processes, False, quantum).get_history()
+
+    def get_history(self):
+        return self.__history

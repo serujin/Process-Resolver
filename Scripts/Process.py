@@ -32,7 +32,7 @@ class Process():
     def set_state(self, state):
         self.__state = state   
 
-    def cpu_tick(self, time, quantum = -1):
+    def cpu_tick(self, time):
         self.__duration -= 1
         if self.__duration == 0:
             self.__state = Constants.ENDED

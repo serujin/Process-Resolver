@@ -36,8 +36,9 @@ class Non_Expulsive():
         for i in range(len(self.__processes)):
             end.append(Constants.ENDED)
         self.__history.append(end)
-        for i in self.__history:
-            print(i)
+        
+    def get_history(self):
+        return self.__history
 
     def __fill_cpu_queue(self):
         processes = Utils.get_new_arrivals(self.__processes, self.__time)

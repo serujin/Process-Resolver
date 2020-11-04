@@ -21,7 +21,7 @@ def get_processes_ids(processes):
         temp.append(process.get_id())
     return temp
 
-def order_by_priority(processes, duration):
+def order_by_priority(processes, duration, id = True):
     low_priorities = []
     mid_priorities = []
     top_priorities = []
@@ -38,10 +38,11 @@ def order_by_priority(processes, duration):
     for process in processes:
         if not process.has_priority():
             no_priorities.append(process)
-    low_priorities = order_by_id(low_priorities)
-    mid_priorities = order_by_id(mid_priorities)
-    top_priorities = order_by_id(top_priorities)
-    no_priorities = order_by_id(no_priorities)
+    if id:
+        low_priorities = order_by_id(low_priorities)
+        mid_priorities = order_by_id(mid_priorities)
+        top_priorities = order_by_id(top_priorities)
+        no_priorities = order_by_id(no_priorities)
     if duration:
         low_priorities = order_by_duration(low_priorities)
         mid_priorities = order_by_duration(mid_priorities)

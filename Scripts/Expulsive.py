@@ -6,7 +6,8 @@ class Expulsive():
     def __init__(self, processes, duration_matters, quantum = -1):
         self.__processes = processes
         self.__duration_matters = duration_matters
-        self.__quantum = quantum
+        self.__max_quantum = quantum
+        self.__current_quantum = 0
         self.__ids = Utils.get_processes_ids(self.__processes)
         self.__ids.sort()
         self.__init_all()
@@ -37,26 +38,43 @@ class Expulsive():
         for i in range(len(self.__processes)):
             end.append(Constants.ENDED)
         self.__history.append(end)
-        for i in self.__history:
-            print(i)
+        
+    def get_history(self):
+        return self.__history
 
     def __fill_cpu_queue(self):
         processes = Utils.get_new_arrivals(self.__processes, self.__time)
         self.__cpu_queue += processes
+        if not self.__cpu == None:
+            if self.__max_quantum > 0:
+                self.__current_quantum += 1
+            else:
+                self.__cpu_queue.append(self.__cpu)
+                self.__cpu = None
         for process in self.__cpu_queue:
             process.set_state(Constants.ON_CPU_QUEUE)
-        self.__cpu_queue = Utils.order_by_priority(self.__cpu_queue, self.__duration_matters)
+        if not self.__max_quantum > 0:
+            self.__cpu_queue = Utils.order_by_priority(self.__cpu_queue, self.__duration_matters)
+        else:
+            self.__cpu_queue = Utils.order_by_priority(self.__cpu_queue, self.__duration_matters, False)
 
     def __fill_cpu(self):
+        if self.__current_quantum == self.__max_quantum and not self.__cpu == None:
+            self.__current_quantum = 0
+            self.__cpu_queue.append(self.__cpu)
+            self.__cpu.set_state(Constants.ON_CPU_QUEUE)
+            self.__cpu = None
         if self.__cpu == None:
             if len(self.__cpu_queue) > 0:
                 self.__cpu = self.__cpu_queue[0]
                 self.__cpu_queue.remove(self.__cpu_queue[0])
                 self.__cpu.set_state(Constants.ON_CPU)
                 if not self.__cpu == None:
-                    if self.__cpu.cpu_tick(self.__time, self.__quantum):
+                    if self.__cpu.cpu_tick(self.__time):
+                        self.__current_quantum = 0
                         self.__cpu = None 
-        elif self.__cpu.cpu_tick(self.__time, self.__quantum):
+        elif self.__cpu.cpu_tick(self.__time):
+            self.__current_quantum = 0
             self.__cpu = None 
 
     def __fill_io_queue(self):
