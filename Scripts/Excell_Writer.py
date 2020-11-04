@@ -37,10 +37,13 @@ class Writer():
             height = len(history[0])
             for column in range(width):
                 self.__write_cpu_queue(worksheet, history, column, height)
+                self.__write_io_queue(worksheet, history, column, height, width)
                 for row in range(height):
                     state = history[column][row]
                     if state == Constants.ON_CPU:
                         self.__write_cpu(worksheet, row, column)
+                    if state == Constants.ON_IO:
+                        self.__write_io(worksheet, row, column, width)
         self.__workbook.close()
     
     def __write_cpu(self, worksheet, row, column):
@@ -58,6 +61,22 @@ class Writer():
         for j in range(len(queue)):
             _format = self.__get_format(ord(queue[j]) - 65)
             worksheet.write(len(states) + j + 3, column + 1, queue[j], _format)
+
+    def __write_io(self, worksheet, row, column, width):
+        _format = self.__get_format(row)
+        worksheet.write(row + 1, width + column + 2, chr(ord('@') + row + 1), _format)
+
+    def __write_io_queue(self, worksheet, history, column, height, width):
+        states = history[column]
+        queue = []
+        worksheet.write(height + 1, width + column + 2, column, self.__number_guide_format) 
+        worksheet.write(height + 1 + len(states), width + column + 2, column, self.__number_guide_format) 
+        for i in range(len(states)):
+            if states[i] == Constants.ON_IO_QUEUE:
+                queue.append(chr(ord('@') + i + 1))
+        for j in range(len(queue)):
+            _format = self.__get_format(ord(queue[j]) - 65)
+            worksheet.write(len(states) + j + 3, width + column + 2, queue[j], _format)
 
     def __init_formats(self):
         self.__formats = []
