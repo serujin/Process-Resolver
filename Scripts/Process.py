@@ -8,6 +8,7 @@ class Process():
         self.__duration = duration
         self.__priority = priority
         self.__current_io = 0
+        self.__max_duration = duration
         self.__io = io
         self.__state = Constants.NOT_ARRIVED
 
@@ -38,17 +39,16 @@ class Process():
             self.__state = Constants.ENDED
             return True
         if self.has_to_go_io(time):
-            print("Sended to IO " + str(self.__id))
             self.__state = Constants.ON_IO_QUEUE
             return True
         return False
 
     def io_tick(self):
-        self.__io[self.__current_io][1] -= 1
         if self.__io[self.__current_io][1] == 0:
             self.__state = Constants.ON_CPU_QUEUE
             self.__current_io += 1
             return True
+        self.__io[self.__current_io][1] -= 1
         return False
 
     def has_ended(self):
@@ -57,7 +57,9 @@ class Process():
     def has_to_go_io(self, time):
         if self.__io == None:
             return False
-        return self.__io[self.__current_io][0] == time
+        if self.__current_io > (len(self.__io) - 1):
+            return False
+        return (self.__io[self.__current_io][0]) == (self.__max_duration - self.__duration)
 
     def has_io_ended(self):
         return self.__io[self.__current_io][1] < 1
@@ -69,4 +71,4 @@ class Process():
         return self.__io != None
 
     def show(self):
-        print(self.__id, self.__arrival, self.__duration, self.__priority, self.__io, self.__state)
+        print("Process : " + self.__id + " || Arrival : "  + str(self.__arrival) + " || Duration : " +  str(self.__duration) + " || Prioridad : " +  str(self.__priority) + " || IO : " + str(self.__io) + " || State : " + str(self.__state))

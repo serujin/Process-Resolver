@@ -44,6 +44,9 @@ class Expulsive():
 
     def __fill_cpu_queue(self):
         processes = Utils.get_new_arrivals(self.__processes, self.__time)
+        for process in self.__processes:
+            if process.get_state() == Constants.ON_CPU_QUEUE and process not in self.__cpu_queue:
+                self.__cpu_queue.append(process)
         self.__cpu_queue += processes
         if not self.__cpu == None:
             if self.__max_quantum > 0:
@@ -88,11 +91,11 @@ class Expulsive():
             if len(self.__io_queue) > 0:
                 self.__io = self.__io_queue[0]
                 self.__io_queue.remove(self.__io_queue[0])
-                self.__cpu.set_state(Constants.ON_IO)
+                self.__io.set_state(Constants.ON_IO)
                 if not self.__io == None:
-                   if self.__io.io_tick(self.__time):
+                   if self.__io.io_tick():
                        self.__io = None 
-        elif self.__io.io_tick(self.__time):
+        elif self.__io.io_tick():
             self.__io = None 
 
     def __fill_history(self):
