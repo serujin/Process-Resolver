@@ -34,9 +34,12 @@ class Algorithm(ABC):
     
     def fill_history(self):
         current_time_history = []
+        current_durations_history = []
         for process in self.processes:
             current_time_history.append(process.state)
-        self.history.append(current_time_history)
+            current_durations_history.append(process.remaining_duration)
+        history_time = [current_time_history, current_durations_history]
+        self.history.append(history_time)
 
     def update_all_states(self):
         self.__update_cpu()
