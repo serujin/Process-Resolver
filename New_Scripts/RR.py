@@ -20,11 +20,8 @@ class RR(Algorithm):
     def update_cpu_queue_logic(self):
         new_processes = self.get_new_arrivals()
         self.fill_cpu_queue(new_processes)
-        #self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False, self.current_time == 0)
 
     def update_cpu_logic(self):
-        print("CPU : " + str(self.cpu) + " Q : " + str(self.current_quantum) + "/" + str(self.quantum))
-        print("SHOULD CPU CHANGE? --> " + str(self.current_quantum == self.quantum))
         if self.cpu_has_to_exit():
             exiting_cpu = self.cpu
             self.send_cpu_to_cpu_queue()

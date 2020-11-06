@@ -31,4 +31,4 @@ def get_exercises():
         CPU(Constants.RR, get_processes(), 2)
     ]
 
-Writer("Ejercicio_1", get_exercises())
+Writer("Ejercicio_1", get_exercises(), True)

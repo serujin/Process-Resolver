@@ -16,50 +16,9 @@ class Algorithm(ABC):
         self.current_quantum = -1
 
     def start(self):
-        p = 0
-        while not self.has_to_stop() and p < 50:
-            #print("----------------- TIME : " + str(self.current_time) + " -----------------\n")
-            #print("CPU : " + str(self.cpu) + " || Q : " + str(self.current_quantum) + "/" + str(self.quantum))
-            #j = [self.processes[1], self.processes[3]]
-            #print(j[0])
-            #print(j[1])
-            #print(self.queue_processes_are_identical(j))
-            #print("---- PROCESSES BEFORE MAIN LOOP ----\n")
-            #for process in self.processes:
-            #    print(process)
-            #print("")
-            #print("------------------------------------\n")
-            #queue = []
-            #for process in self.cpu_queue:
-            #    queue.append(process.id)
-            #print("------- CPU BEFORE MAIN LOOP -------\n")
-            #print(self.cpu)
-            #print("")
-            #print("------------------------------------\n")
-            #print("---- CPU QUEUE BEFORE MAIN LOOP ----\n")
-            #print(queue)
-            #print("")
-            #print("------------------------------------\n")
+        while not self.has_to_stop():
             self.main_loop()
             self.current_time += 1
-            #print("---- PROCESSES AFTER MAIN LOOP ----\n")
-            #for process in self.processes:
-            #    print(process)
-            #print("")
-            #print("------------------------------------\n")
-            #queue = []
-            #for process in self.cpu_queue:
-            #    queue.append(process.id)
-            #print("-------- CPU AFTER MAIN LOOP -------\n")
-            #print(self.cpu)
-            #print("")
-            #print("------------------------------------\n")
-            #print("----- CPU QUEUE AFTER MAIN LOOP ----\n")
-            #print(queue)
-            #print("")
-            #print("------------------------------------\n")
-            #print("----------------- TIME : " + str(self.current_time - 1) + " -----------------\n")
-            p += 1
         self.fill_history()
 
     def main_loop(self):
@@ -77,7 +36,6 @@ class Algorithm(ABC):
         current_time_history = []
         for process in self.processes:
             current_time_history.append(process.state)
-        #print(current_time_history)
         self.history.append(current_time_history)
 
     def update_all_states(self):
@@ -245,7 +203,7 @@ class Algorithm(ABC):
             mid_priority_queue = self.get_processes_ordered_from_lowest_to_highest_duration(mid_priority_queue)
             low_priority_queue = self.get_processes_ordered_from_lowest_to_highest_duration(low_priority_queue)
             nan_priority_queue = self.get_processes_ordered_from_lowest_to_highest_duration(nan_priority_queue)
-        if alphabetically or self.queue_processes_are_identical(queue) and self.quantum > -1: #If alphabetically cares delete this for RR
+        if alphabetically or self.queue_processes_are_identical(queue) and self.quantum > 0: #If alphabetically cares delete this for RR
             top_priority_queue = self.get_processes_ordered_alphabetically(top_priority_queue)
             mid_priority_queue = self.get_processes_ordered_alphabetically(mid_priority_queue)
             low_priority_queue = self.get_processes_ordered_alphabetically(low_priority_queue)
