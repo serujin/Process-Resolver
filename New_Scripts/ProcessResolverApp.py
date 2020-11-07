@@ -3,7 +3,7 @@ from CPU import CPU
 from Excell_Writer import Writer
 from FIFO import FIFO
 import Constants
-'''
+
 def get_processes():                                                         
     return [
         Process("A", 0, 3, Constants.LOW_PRIORITY, [[1,5]]),
@@ -17,10 +17,10 @@ def get_processes():
 ''' 
 def get_processes():
     return [
-        Process("A", 0, 3, Constants.TOP_PRIORITY),
+        Process("A", 0, 3, io = [[1,3]]),
         Process("B", 3, 6),
-        Process("C", 4, 4),
-        Process("D", 6, 5),
+        Process("C", 4, 4, io = [[2,5]]),
+        Process("D", 6, 5, io = [[4,1]]),
         Process("E", 8, 2),
         Process("F", 2, 6),
         Process("G", 4, 4),
@@ -28,6 +28,7 @@ def get_processes():
         Process("I", 6, 5),
         Process("J", 6, 5)
     ]
+'''    
 def get_exercises():
     return [
         [CPU(Constants.FIFO, get_processes()), Constants.FIFO],
@@ -36,4 +37,4 @@ def get_exercises():
         [CPU(Constants.RR, get_processes(), 2), Constants.RR]
     ]
 
-Writer("Ejercicio_1", get_exercises())
+Writer("Ejercicio_1", get_exercises(), True)

@@ -15,7 +15,7 @@ class Writer():
         for cpu in self.cpus:
             if self.debug:
                 print("--------------------------------------")
-                for i in cpu.history[0]:
+                for i in cpu.history:
                     print(i)
                 print("--------------------------------------")
     
