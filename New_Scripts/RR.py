@@ -26,10 +26,7 @@ class RR(Algorithm):
         if self.cpu_has_to_exit():
             exiting_cpu = self.cpu
             self.send_cpu_to_cpu_queue()
-            if len(self.cpu_queue) > 0:
-                self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False)
-                self.cpu_queue.remove(exiting_cpu)
-                self.cpu_queue.append(exiting_cpu)
+            self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False)
         if self.cpu_is_empty() and not self.cpu_queue_is_empty():
             self.fill_cpu()
         
