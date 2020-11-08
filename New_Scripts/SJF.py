@@ -18,7 +18,7 @@ class SJF(Algorithm):
     def update_cpu_queue_logic(self):
         new_processes = self.get_new_arrivals()
         self.fill_cpu_queue(new_processes)
-        self.cpu_queue = self.get_ordered_queue(self.cpu_queue, True, self.current_time == 0)
+        self.cpu_queue = self.get_ordered_queue(self.cpu_queue, True)
 
     def update_cpu_logic(self):
         if self.cpu_is_empty() and not self.cpu_queue_is_empty():
@@ -27,6 +27,6 @@ class SJF(Algorithm):
     def update_io_queue_logic(self):
         if not self.cpu_is_empty() and self.cpu_has_to_go_to_io():
             self.send_cpu_to_io_queue()
-            self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False, False) #Maybe delete this and transfer to parent
+            self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False) #Maybe delete this and transfer to parent
             if not self.cpu_queue_is_empty():
                 self.fill_cpu()

@@ -19,9 +19,9 @@ class FIFO(Algorithm):
         new_processes = self.get_new_arrivals()
         self.fill_cpu_queue(new_processes)
         if self.queue_processes_are_identical(self.cpu_queue):
-                self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False, True)
+                self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False)
         else:
-            self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False, self.current_time == 0)
+            self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False)
 
     def update_cpu_logic(self):
         if self.cpu_is_empty() and (not self.cpu_queue_is_empty()):
@@ -30,6 +30,6 @@ class FIFO(Algorithm):
     def update_io_queue_logic(self):
         if not self.cpu_is_empty() and self.cpu_has_to_go_to_io():
             self.send_cpu_to_io_queue()
-            self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False, False) #Maybe delete this and transfer to parent
+            self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False) #Maybe delete this and transfer to parent
             if not self.cpu_queue_is_empty():
                 self.fill_cpu()

@@ -20,19 +20,18 @@ class RR(Algorithm):
     def update_cpu_queue_logic(self):
         new_processes = self.get_new_arrivals()
         self.fill_cpu_queue(new_processes)
-        self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False, self.current_time == 0)
+        self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False)
 
     def update_cpu_logic(self):
         if self.cpu_has_to_exit():
             exiting_cpu = self.cpu
             self.send_cpu_to_cpu_queue()
-            self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False, self.current_time == 0)
-            if len(self.cpu_queue) > 1:
+            if len(self.cpu_queue) > 0:
+                self.cpu_queue = self.get_ordered_queue(self.cpu_queue, False)
                 self.cpu_queue.remove(exiting_cpu)
                 self.cpu_queue.append(exiting_cpu)
         if self.cpu_is_empty() and not self.cpu_queue_is_empty():
             self.fill_cpu()
-        
         
     def update_io_queue_logic(self):
         if not self.cpu_is_empty() and self.cpu_has_to_go_to_io():

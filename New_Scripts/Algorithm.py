@@ -178,25 +178,38 @@ class Algorithm(ABC):
         self.io.current_io_ended()
         self.io = None
 
-    def queue_processes_are_identical(self, queue):
+    def queue_processes_are_identical(self, queue, rr = False):
         if len(queue) == 0:
             return False
         durations = []
         priorities = []
+        arrivals = []
         for process in queue:
             durations.append(process.remaining_duration)
             priorities.append(process.priority)
+            arrivals.append(process.arrival)
         duration_checker = durations[0]
         priorities_checker = priorities[0]
+        arrivals_checker = arrivals[0]
         for duration in durations:
             if not duration == duration_checker:
                 return False 
         for priority in priorities:
             if not priority == priorities_checker:
                 return False
+        if rr:
+            for arrival in arrivals:
+                if not arrival == arrivals_checker:
+                    return False      
         return True
 
-    def get_ordered_queue(self, queue, duration, alphabetically):
+    def has_priority(self):
+        for process in self.processes:
+            if process.priority == Constants.NAN_PRIORITY:
+                return False
+        return True
+
+    def get_ordered_queue(self, queue, duration):
         top_priority_queue = self.get_processes_by_priority(queue, Constants.TOP_PRIORITY)
         mid_priority_queue = self.get_processes_by_priority(queue, Constants.MID_PRIORITY)
         low_priority_queue = self.get_processes_by_priority(queue, Constants.LOW_PRIORITY)
@@ -206,7 +219,7 @@ class Algorithm(ABC):
             mid_priority_queue = self.get_processes_ordered_from_lowest_to_highest_duration(mid_priority_queue)
             low_priority_queue = self.get_processes_ordered_from_lowest_to_highest_duration(low_priority_queue)
             nan_priority_queue = self.get_processes_ordered_from_lowest_to_highest_duration(nan_priority_queue)
-        if alphabetically or self.queue_processes_are_identical(queue) and self.quantum > 0: #If alphabetically cares delete this for RR
+        if self.queue_processes_are_identical(queue, self.quantum > 0):
             top_priority_queue = self.get_processes_ordered_alphabetically(top_priority_queue)
             mid_priority_queue = self.get_processes_ordered_alphabetically(mid_priority_queue)
             low_priority_queue = self.get_processes_ordered_alphabetically(low_priority_queue)
