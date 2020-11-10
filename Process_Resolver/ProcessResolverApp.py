@@ -1,7 +1,6 @@
 from Process import Process
 from CPU import CPU
-from Excell_Writer import Writer
-from FIFO import FIFO
+from ExcellWriter import Writer
 import Constants
 
 def get_exercise_one_processes(): #EJERCICIO 1 WORKS :)                                                    
@@ -42,8 +41,8 @@ def get_processes(): #TEST ALGORITMOS SIMPLES
         Process("C", 4, 4),
         Process("D", 6, 5),
         Process("E", 8, 2)  
-    ] 
-'''     
+    ]   
+'''  
 def get_exercise_one():
     return [
         [CPU(Constants.FIFO, get_exercise_one_processes()), Constants.FIFO],
