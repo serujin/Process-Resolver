@@ -49,6 +49,14 @@ class Controller():
     def ini_process(self):
         print("INI")
 
+    def get_processes_from_list(self):
+        processes = []
+        for i in range(self.main_frame.process_list.size()):
+            processes.append()
+
+    def get_process_from_listbox_index(self):
+        pass
+
     def go_to_main_frame(self):
         self.show_frame(self.main_frame)
 
